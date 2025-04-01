@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
-find_package(Albert REQUIRED)
+project(timezones VERSION 2.1)
 
-project(timezones VERSION 2.0)
+find_package(Albert REQUIRED)
 
 albert_plugin(QT Core)
