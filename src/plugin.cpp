@@ -16,6 +16,8 @@ QString Plugin::defaultTrigger() const
 
 void Plugin::handleTriggerQuery(Query &query)
 {
+    vector<shared_ptr<Item>> items;
+
     QLocale loc;
     auto utc = QDateTime::currentDateTimeUtc();
     const auto tr_copy = tr("Copy to clipboard");
@@ -42,7 +44,7 @@ void Plugin::handleTriggerQuery(Query &query)
             auto sf = loc.toString(dt, QLocale::ShortFormat);
             auto lf = loc.toString(dt, QLocale::LongFormat);
 
-            query.add(
+            items.emplace_back(
                 StandardItem::make(
                     tz_id, lf, tz_info.join(", "), tz_id, {QStringLiteral(":datetime")},
                     {
@@ -59,4 +61,6 @@ void Plugin::handleTriggerQuery(Query &query)
             );
         }
     }
+
+    query.add(::move(items));
 }
