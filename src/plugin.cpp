@@ -7,9 +7,9 @@
 #include <albert/albert.h>
 #include <albert/matcher.h>
 #include <albert/standarditem.h>
-using namespace albert::timezones;
 using namespace albert;
 using namespace std;
+using namespace util;
 
 QString Plugin::defaultTrigger() const
 { return tr("tz "); }

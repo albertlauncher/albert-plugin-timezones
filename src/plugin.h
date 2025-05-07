@@ -4,8 +4,6 @@
 #include <albert/extensionplugin.h>
 #include <albert/triggerqueryhandler.h>
 
-namespace albert::timezones
-{
 class Plugin : public albert::ExtensionPlugin,
                public albert::TriggerQueryHandler
 {
@@ -19,5 +17,3 @@ public:
     QStringList icon_urls{":timezones"};
 
 };
-
-}
