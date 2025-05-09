@@ -46,7 +46,7 @@ void Plugin::handleTriggerQuery(Query &query)
 
             items.emplace_back(
                 StandardItem::make(
-                    tz_id, lf, tz_info.join(", "), tz_id, {QStringLiteral(":datetime")},
+                    tz_id, lf, tz_info.join(", "), tz_id, {QStringLiteral(":timezones")},
                     {
                         {
                             QStringLiteral("cl"), tr_copy,
