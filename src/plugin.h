@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2024 Manuel Schneider
+// Copyright (c) 2023-2025 Manuel Schneider
 
 #pragma once
 #include <albert/extensionplugin.h>
@@ -13,7 +13,5 @@ public:
 
     QString defaultTrigger() const override;
     void handleTriggerQuery(albert::Query &) override;
-
-    QStringList icon_urls{":timezones"};
 
 };

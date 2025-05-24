@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2024 Manuel Schneider
+// Copyright (c) 2023-2025 Manuel Schneider
 
 #include "plugin.h"
 #include <QDateTime>
@@ -7,12 +7,12 @@
 #include <albert/albert.h>
 #include <albert/matcher.h>
 #include <albert/standarditem.h>
+using namespace Qt::StringLiterals;
+using namespace albert::util;
 using namespace albert;
 using namespace std;
-using namespace util;
 
-QString Plugin::defaultTrigger() const
-{ return tr("tz "); }
+QString Plugin::defaultTrigger() const { return tr("tz "); }
 
 void Plugin::handleTriggerQuery(Query &query)
 {
@@ -28,32 +28,32 @@ void Plugin::handleTriggerQuery(Query &query)
         if (!query.isValid())
             return;
 
-        auto tz = QTimeZone(tz_id_barray);
-        auto dt = utc.toTimeZone(tz);
+        const auto tz = QTimeZone(tz_id_barray);
+        const auto dt = utc.toTimeZone(tz);
 
-        auto tz_id = QString::fromLocal8Bit(tz_id_barray).replace("_", " ");
-        auto tz_name_sf = tz.displayName(dt, QTimeZone::ShortName, loc);
-        auto tz_name_lf = tz.displayName(dt, QTimeZone::LongName, loc);
-        auto tz_name_of = tz.displayName(dt, QTimeZone::OffsetName, loc);
+        const auto tz_id = QString::fromLocal8Bit(tz_id_barray).replace(u'_', u' ');
+        const auto tz_name_sf = tz.displayName(dt, QTimeZone::ShortName, loc);
+        const auto tz_name_lf = tz.displayName(dt, QTimeZone::LongName, loc);
+        const auto tz_name_of = tz.displayName(dt, QTimeZone::OffsetName, loc);
 
         if (auto m = Matcher(query).match(tz_id, tz_name_sf, tz_name_lf); m)
         {
             QStringList tz_info{tz_id, tz_name_lf, tz_name_sf, tz_name_of};
             tz_info.removeDuplicates();
 
-            auto sf = loc.toString(dt, QLocale::ShortFormat);
-            auto lf = loc.toString(dt, QLocale::LongFormat);
+            const auto sf = loc.toString(dt, QLocale::ShortFormat);
+            const auto lf = loc.toString(dt, QLocale::LongFormat);
 
             items.emplace_back(
                 StandardItem::make(
-                    tz_id, lf, tz_info.join(", "), tz_id, {QStringLiteral(":timezones")},
+                    tz_id, lf, tz_info.join(u", "_s), tz_id, {u":timezones"_s},
                     {
                         {
-                            QStringLiteral("cl"), tr_copy,
+                            u"cl"_s, tr_copy,
                             [=]{ setClipboardText(lf); }
                         },
                         {
-                            QStringLiteral("cl"), tr_copy_placeholder.arg(sf),
+                            u"cl"_s, tr_copy_placeholder.arg(sf),
                             [=]{ setClipboardText(sf); }
                         }
                     }
