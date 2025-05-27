@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include <QLocale>
 #include <QTimeZone>
-#include <albert/albert.h>
+#include <albert/systemutil.h>
 #include <albert/matcher.h>
 #include <albert/standarditem.h>
 using namespace Qt::StringLiterals;
