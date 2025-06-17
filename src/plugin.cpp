@@ -46,7 +46,7 @@ void Plugin::handleTriggerQuery(Query &query)
 
             items.emplace_back(
                 StandardItem::make(
-                    tz_id, lf, tz_info.join(u", "_s), tz_id, {u":timezones"_s},
+                    tz_id, lf, tz_info.join(u", "_s), {u":timezones"_s},
                     {
                         {
                             u"cl"_s, tr_copy,
@@ -56,7 +56,8 @@ void Plugin::handleTriggerQuery(Query &query)
                             u"cl"_s, tr_copy_placeholder.arg(sf),
                             [=]{ setClipboardText(sf); }
                         }
-                    }
+                    },
+                    tz_id
                 )
             );
         }

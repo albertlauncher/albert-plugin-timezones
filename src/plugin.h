@@ -4,7 +4,7 @@
 #include <albert/extensionplugin.h>
 #include <albert/triggerqueryhandler.h>
 
-class Plugin : public albert::ExtensionPlugin,
+class Plugin : public albert::util::ExtensionPlugin,
                public albert::TriggerQueryHandler
 {
     ALBERT_PLUGIN
