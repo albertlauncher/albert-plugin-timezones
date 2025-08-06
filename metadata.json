@@ -4,6 +4,7 @@
     "description": "Date and time for time zones",
     "description[de]": "Datum- und Uhrzeit für Zeitzonen",
     "license": "MIT",
+    "maintainers": ["@manuelschneid3r"],
     "name": "Time zones",
     "name[de]": "Zeitzonen",
     "url": "https://github.com/albertlauncher/albert-plugin-timezones",
