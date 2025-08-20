@@ -1,1 +1,1 @@
-# albert-plugin-timezones
+# Albert plugin: Time zones
