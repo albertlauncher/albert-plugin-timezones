@@ -4,9 +4,10 @@
 #include <QDateTime>
 #include <QLocale>
 #include <QTimeZone>
-#include <albert/systemutil.h>
+#include <albert/iconutil.h>
 #include <albert/matcher.h>
 #include <albert/standarditem.h>
+#include <albert/systemutil.h>
 using namespace Qt::StringLiterals;
 using namespace albert::util;
 using namespace albert;
@@ -45,21 +46,13 @@ void Plugin::handleTriggerQuery(Query &query)
             const auto lf = loc.toString(dt, QLocale::LongFormat);
 
             items.emplace_back(
-                StandardItem::make(
-                    tz_id, lf, tz_info.join(u", "_s), {u":timezones"_s},
-                    {
-                        {
-                            u"cl"_s, tr_copy,
-                            [=]{ setClipboardText(lf); }
-                        },
-                        {
-                            u"cl"_s, tr_copy_placeholder.arg(sf),
-                            [=]{ setClipboardText(sf); }
-                        }
-                    },
-                    tz_id
-                )
-            );
+                StandardItem::make(tz_id,
+                                   lf,
+                                   tz_info.join(u", "_s),
+                                   []{ return makeImageIcon(u":timezones"_s); },
+                                   {{u"cl"_s, tr_copy, [=] { setClipboardText(lf); }},
+                                    {u"cl"_s, tr_copy_placeholder.arg(sf), [=] { setClipboardText(sf); }}},
+                                   tz_id));
         }
     }
 
