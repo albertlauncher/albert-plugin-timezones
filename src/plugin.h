@@ -2,16 +2,14 @@
 
 #pragma once
 #include <albert/extensionplugin.h>
-#include <albert/triggerqueryhandler.h>
+#include <albert/rankedqueryhandler.h>
 
-class Plugin : public albert::util::ExtensionPlugin,
-               public albert::TriggerQueryHandler
+class Plugin : public albert::ExtensionPlugin,
+               public albert::RankedQueryHandler
 {
     ALBERT_PLUGIN
 
 public:
-
     QString defaultTrigger() const override;
-    void handleTriggerQuery(albert::Query &) override;
-
+    std::vector<albert::RankItem> rankItems(albert::QueryContext &) override;
 };

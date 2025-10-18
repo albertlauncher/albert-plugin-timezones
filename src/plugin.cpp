@@ -9,15 +9,14 @@
 #include <albert/standarditem.h>
 #include <albert/systemutil.h>
 using namespace Qt::StringLiterals;
-using namespace albert::util;
 using namespace albert;
 using namespace std;
 
 QString Plugin::defaultTrigger() const { return tr("tz "); }
 
-void Plugin::handleTriggerQuery(Query &query)
+vector<RankItem> Plugin::rankItems(QueryContext &ctx)
 {
-    vector<shared_ptr<Item>> items;
+    vector<RankItem> matches;
 
     QLocale loc;
     auto utc = QDateTime::currentDateTimeUtc();
@@ -26,8 +25,8 @@ void Plugin::handleTriggerQuery(Query &query)
 
     for (auto &tz_id_barray: QTimeZone::availableTimeZoneIds())
     {
-        if (!query.isValid())
-            return;
+        if (!ctx.isValid())
+            return matches;
 
         const auto tz = QTimeZone(tz_id_barray);
         const auto dt = utc.toTimeZone(tz);
@@ -37,7 +36,7 @@ void Plugin::handleTriggerQuery(Query &query)
         const auto tz_name_lf = tz.displayName(dt, QTimeZone::LongName, loc);
         const auto tz_name_of = tz.displayName(dt, QTimeZone::OffsetName, loc);
 
-        if (auto m = Matcher(query).match(tz_id, tz_name_sf, tz_name_lf); m)
+        if (auto m = Matcher(ctx).match(tz_id, tz_name_sf, tz_name_lf); m)
         {
             QStringList tz_info{tz_id, tz_name_lf, tz_name_sf, tz_name_of};
             tz_info.removeDuplicates();
@@ -45,16 +44,19 @@ void Plugin::handleTriggerQuery(Query &query)
             const auto sf = loc.toString(dt, QLocale::ShortFormat);
             const auto lf = loc.toString(dt, QLocale::LongFormat);
 
-            items.emplace_back(
-                StandardItem::make(tz_id,
-                                   lf,
-                                   tz_info.join(u", "_s),
-                                   []{ return makeImageIcon(u":timezones"_s); },
-                                   {{u"cl"_s, tr_copy, [=] { setClipboardText(lf); }},
-                                    {u"cl"_s, tr_copy_placeholder.arg(sf), [=] { setClipboardText(sf); }}},
-                                   tz_id));
+            matches.emplace_back(StandardItem::make(
+                                     tz_id,
+                                     lf,
+                                     tz_info.join(u", "_s),
+                                     [] { return makeImageIcon(u":timezones"_s); },
+                                     {{u"cl"_s, tr_copy, [=] { setClipboardText(lf); }},
+                                      {u"cl"_s,
+                                       tr_copy_placeholder.arg(sf),
+                                       [=] { setClipboardText(sf); }}},
+                                     tz_id),
+                                 m);
         }
     }
 
-    query.add(::move(items));
+    return matches;
 }
