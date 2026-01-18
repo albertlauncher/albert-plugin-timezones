@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include <QLocale>
 #include <QTimeZone>
-#include <albert/iconutil.h>
+#include <albert/icon.h>
 #include <albert/matcher.h>
 #include <albert/standarditem.h>
 #include <albert/systemutil.h>
@@ -48,7 +48,7 @@ vector<RankItem> Plugin::rankItems(QueryContext &ctx)
                                      tz_id,
                                      lf,
                                      tz_info.join(u", "_s),
-                                     [] { return makeImageIcon(u":timezones"_s); },
+                                     [] { return Icon::image(u":timezones"_s); },
                                      {{u"cl"_s, tr_copy, [=] { setClipboardText(lf); }},
                                       {u"cl"_s,
                                        tr_copy_placeholder.arg(sf),
