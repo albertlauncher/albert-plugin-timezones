@@ -1,6 +1,7 @@
-// Copyright (c) 2023-2025 Manuel Schneider
+// Copyright (c) 2023-2026 Manuel Schneider
 
 #include "plugin.h"
+#include <QCoroGenerator>
 #include <QDateTime>
 #include <QLocale>
 #include <QTimeZone>
@@ -14,7 +15,7 @@ using namespace std;
 
 QString Plugin::defaultTrigger() const { return tr("tz "); }
 
-vector<RankItem> Plugin::rankItems(QueryContext &ctx)
+ItemGenerator Plugin::items(QueryContext &ctx)
 {
     vector<RankItem> matches;
 
@@ -26,7 +27,7 @@ vector<RankItem> Plugin::rankItems(QueryContext &ctx)
     for (auto &tz_id_barray: QTimeZone::availableTimeZoneIds())
     {
         if (!ctx.isValid())
-            return matches;
+            break;
 
         const auto tz = QTimeZone(tz_id_barray);
         const auto dt = utc.toTimeZone(tz);
@@ -58,5 +59,5 @@ vector<RankItem> Plugin::rankItems(QueryContext &ctx)
         }
     }
 
-    return matches;
+    return lazySort(matches, ctx.usageScoring());
 }
