@@ -15,7 +15,7 @@ using namespace std;
 
 QString Plugin::defaultTrigger() const { return tr("tz "); }
 
-ItemGenerator Plugin::items(QueryContext &ctx)
+ItemGenerator Plugin::items(QueryContext ctx)
 {
     vector<RankItem> matches;
 

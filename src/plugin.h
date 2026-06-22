@@ -10,5 +10,5 @@ class Plugin : public albert::ExtensionPlugin,
     ALBERT_PLUGIN
 public:
     QString defaultTrigger() const override;
-    albert::ItemGenerator items(albert::QueryContext &) override;
+    albert::ItemGenerator items(albert::QueryContext) override;
 };
