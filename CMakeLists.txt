@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(timezones VERSION 2.7.2)
+project(timezones VERSION 2.8.0)
 
 find_package(Albert REQUIRED)
 
